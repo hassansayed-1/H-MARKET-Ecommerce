@@ -62,7 +62,7 @@ const ProductDetails = () => {
   const cardBorder = isDark ? "#292929" : "#eee";
   const textColor = isDark ? "#f3f4f6" : "#222935";
   const subTextColor = isDark ? "#b0b3b8" : "#6B7280";
-  const imageUrl = product.image?.url ? `${import.meta.env.VITE_API}${product.image.url}` : "/placeholder.png";
+  const imageUrl = product.image?.url ;
 
   return (
     <Box
@@ -227,9 +227,7 @@ const ProductDetails = () => {
         >
           {relatedProducts.map((rel) => {
             const relProd = rel;
-            const relImageUrl = relProd.image?.url
-              ? `${import.meta.env.VITE_API}${relProd.image.url}`
-              : "/placeholder.png";
+            const relImageUrl = relProd.image?.url;
             return (
               <Paper
                 key={rel.id}

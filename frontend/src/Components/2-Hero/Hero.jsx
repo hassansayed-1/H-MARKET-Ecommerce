@@ -6,7 +6,7 @@ import React from "react";
 // Simple slider for two images
 const heroSlides = [
   {
-    img: "../../../public/slider.png",
+    img: "./slider.png",
     title: "MEN",
     subtitle: "LIFESTYLE COLLECTION",
     sale: "SALE UP TO 30% OFF",
@@ -14,7 +14,7 @@ const heroSlides = [
     btn: "Shop Now",
   },
   {
-    img: "../../../public/slider3.png",
+    img: "./slider3.png",
     title: "MEN",
     subtitle: "PERFYOUMS & ACCESSORIES",
     sale: "SALE UP TO 35% OFF",
@@ -245,7 +245,7 @@ export const Hero = () => {
               </Box>
               <Box
                 component="img"
-                src="../../../public/shoes2.png"
+                src="./shoes2.png"
                 alt="Summer Sale"
                 sx={{
                   width: 60,
@@ -294,7 +294,7 @@ export const Hero = () => {
               </Box>
               <Box
                 component="img"
-                src="../../../public/laptop.png"
+                src="./laptop.png"
                 alt="Desktops & Laptops"
                 sx={{
                   width: 60,
@@ -589,7 +589,7 @@ export const Hero = () => {
               </Box>
               <Box
                 component="img"
-                src="../../../public/shoes2.png"
+                src="./shoes2.png"
                 alt="Summer Sale"
                 sx={{
                   width: { xs: 60, md: 100 },
@@ -638,7 +638,7 @@ export const Hero = () => {
               </Box>
               <Box
                 component="img"
-                src="../../../public/laptop.png"
+                src="./laptop.png"
                 alt="Desktops & Laptops"
                 sx={{
                   width: { xs: 60, md: 100 },
@@ -700,7 +700,7 @@ export const Hero = () => {
             </Box>
             <Box
               component="img"
-              src="../../../public/shoes2.png"
+              src="./shoes2.png"
               alt="Summer Sale"
               sx={{
                 width: 80,
@@ -751,7 +751,7 @@ export const Hero = () => {
             </Box>
             <Box
               component="img"
-              src="../../../public/laptop.png"
+              src="./laptop.png"
               alt="Desktops & Laptops"
               sx={{
                 width: 80,

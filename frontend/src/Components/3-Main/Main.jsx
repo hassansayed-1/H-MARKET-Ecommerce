@@ -215,7 +215,7 @@ export const Main = () => {
                 >
                   <Box
                     component="img"
-                    src={`${import.meta.env.VITE_API}${product.image?.url || ""}`}
+                    src={product.image.url || ""}
                     alt={product.Title}
                     sx={{
                       width: 240,

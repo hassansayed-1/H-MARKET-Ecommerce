@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Badge from "@mui/material/Badge";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
@@ -7,6 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CartContext } from "../../context/CartContext";
+import { AuthContext } from "../../context/AuthContext";
 import {
   Box,
   Button,
@@ -64,12 +65,51 @@ const categoriesList = [
   { label: "Automotive", icon: <SettingsIcon /> },
 ];
 
+import { useNavigate } from "react-router-dom";
+
 export const HeaderCombined = () => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
   const colorMode = useContext(ColorModeContext);
-  const { cart, removeFromCart, incrementQty, decrementQty } =
-    useContext(CartContext);
+  const { cart, removeFromCart, incrementQty, decrementQty, clearCart, setCart } = useContext(CartContext);
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  // Auth state
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+  const profileMenuOpen = Boolean(profileAnchorEl);
+
+  // On mount, check for user in localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
+
+  // On mount, check for user in localStorage and restore user cart
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) {
+      setUser(JSON.parse(stored));
+      // Restore user cart on login
+      const userId = JSON.parse(stored).id;
+      const userCart = localStorage.getItem(`cart_${userId}`);
+      setCart(userCart ? JSON.parse(userCart) : []);
+    } else {
+      // Guest cart
+      const guestCart = localStorage.getItem("cart_guest");
+      setCart(guestCart ? JSON.parse(guestCart) : []);
+    }
+  }, []);
+
+  const handleProfileClick = (event) => setProfileAnchorEl(event.currentTarget);
+  const handleProfileClose = () => setProfileAnchorEl(null);
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("user");
+    clearCart();
+    setUser(null);
+    handleProfileClose();
+  };
   const [cartAnchorEl, setCartAnchorEl] = useState(null);
   const openCart = (event) => setCartAnchorEl(event.currentTarget);
   const closeCart = () => setCartAnchorEl(null);
@@ -131,11 +171,6 @@ export const HeaderCombined = () => {
   // Custom dark gray for dark mode
   const darkBg = "#232324";
   const darkSubBg = "#292929";
-  function getCartImageUrl(url) {
-  if (!url) return "/placeholder.png";
-  if (url.startsWith("http")) return url;
-  return `${import.meta.env.VITE_API}${url}`;
-  }
 
   return (
     <Box sx={{ bgcolor: isDark ? darkBg : "#fff" }}>
@@ -163,17 +198,20 @@ export const HeaderCombined = () => {
           </IconButton>
         )}
 
-        {/* Logo */}
+        {/* Logo as button */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box
-            component="img"
-            src={isDark ? logo2 : logo}
-            alt="E-Commerce Logo"
-            sx={{
-              width: 80,
-              height: 65,
-            }}
-          />
+          <IconButton onClick={() => {navigate("/"); window.scrollTo({ top: 0 });}} sx={{ p: 0, borderRadius: 2 }}>
+            <Box
+              component="img"
+              src={isDark ? logo2 : logo}
+              alt="E-Commerce Logo"
+              sx={{
+                width: 80,
+                height: 65,
+                cursor: "pointer",
+              }}
+            />
+          </IconButton>
         </Box>
 
         {/* Search Bar */}
@@ -233,11 +271,31 @@ export const HeaderCombined = () => {
 
         {/* Icons */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <IconButton>
+          {/* Profile Icon with menu */}
+          <IconButton onClick={handleProfileClick}>
             <PersonOutlineOutlinedIcon
               sx={{ color: isDark ? "#b0b3b8" : "#6B7280", fontSize: 28 }}
             />
           </IconButton>
+          <Menu
+            anchorEl={profileAnchorEl}
+            open={profileMenuOpen}
+            onClose={handleProfileClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            {!user ? (
+              <>
+                <MenuItem onClick={() => { handleProfileClose(); navigate("/login"); }}>Login</MenuItem>
+                <MenuItem onClick={() => { handleProfileClose(); navigate("/register"); }}>Register</MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={() => { handleProfileClose(); navigate("/account"); }}>My Account</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </>
+            )}
+          </Menu>
           <IconButton onClick={openCart}>
             <Badge
               badgeContent={cart.reduce(
@@ -305,7 +363,7 @@ export const HeaderCombined = () => {
                   >
                     <Box
                       component="img"
-                      src={getCartImageUrl(item.image?.url)}
+                      src={item.image?.url}
                       alt={item.name}
                       sx={{
                         width: 56,
