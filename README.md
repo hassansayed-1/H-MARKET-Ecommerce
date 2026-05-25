@@ -209,16 +209,8 @@ Follow the Strapi [deployment section](https://docs.strapi.io/dev-docs/deploymen
 - [Strapi Tutorials](https://strapi.io/tutorials)
 - [Strapi Community Forum](https://forum.strapi.io)
 
-## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
-
-## 📄 License
-
-This project is private. Please contact the repository owner for usage permissions.
-
----
 
 **Created by**: Hassan Sayed  
 **Repository**: [H-MARKET-Ecommerce](https://github.com/hassansayed-1/H-MARKET-Ecommerce)  
-**Last Updated**: May 2026
+**Last Updated**: Aug 2025
